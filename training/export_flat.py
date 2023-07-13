@@ -5,6 +5,8 @@ from tza import Reader
 import os
 from pathlib import Path
 from copy import deepcopy
+from time import sleep
+import flatbuffers
 
 base_path = Path("weights/oidn-weights")
 
@@ -20,5 +22,5 @@ for i in all_f:
 
     model.load_state_dict({k: torch.from_numpy(red[k][0].copy()) for k in red._table.keys()})
     parser = Parser(save_path="flatbuffer", name=i.replace(".tza", ""))
-    parser.parse_module(module=deepcopy(model), name="denoiser")
+    parser.parse_module(model, name="denoiser")
     parser.save_to_flatbuff()
